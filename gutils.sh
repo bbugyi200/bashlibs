@@ -6,38 +6,38 @@ if [[ "${GUTILS_HAS_BEEN_SOURCED}" != true ]]; then
     GUTILS_HAS_BEEN_SOURCED=true
 
     # ---------- Global Variables ----------
-    scriptname="$(basename "$0")"
+    SCRIPTNAME="$(basename "$0")"
     # shellcheck disable=SC2034
-    usage="usage: ${scriptname}"
+    USAGE="usage: ${SCRIPTNAME}"
     
     # ---------- XDG User Directories ----------
     # shellcheck disable=SC2034
     if [[ -n "${XDG_RUNTIME_DIR}" ]]; then
-        xdg_runtime="${XDG_RUNTIME_DIR}"
+        XDG_RUNTIME="${XDG_RUNTIME_DIR}"
     else
-        xdg_runtime=/tmp
+        XDG_RUNTIME=/tmp
     fi
     
     # shellcheck disable=SC2034
     if [[ -n "${XDG_CONFIG_HOME}" ]]; then
-        xdg_config="${XDG_CONFIG_HOME}"
+        XDG_CONFIG="${XDG_CONFIG_HOME}"
     else
-        xdg_config=/home/"${USER}"
+        XDG_CONFIG=/home/"${USER}"
     fi
     
     # shellcheck disable=SC2034
     if [[ -n "${XDG_DATA_HOME}" ]]; then
-        xdg_data="${XDG_DATA_HOME}"
+        XDG_DATA="${XDG_DATA_HOME}"
     else
-        xdg_data=/home/"${USER}"/.local/share
+        XDG_DATA=/home/"${USER}"/.local/share
     fi
     
     # shellcheck disable=SC2034
-    my_xdg_runtime="${xdg_runtime}"/"${scriptname}"
+    MY_XDG_RUNTIME="${XDG_RUNTIME}"/"${SCRIPTNAME}"
     # shellcheck disable=SC2034
-    my_xdg_config="${xdg_config}"/"${scriptname}"
+    MY_XDG_CONFIG="${XDG_CONFIG}"/"${SCRIPTNAME}"
     # shellcheck disable=SC2034
-    my_xdg_data="${xdg_data}"/"${scriptname}"
+    MY_XDG_DATA="${XDG_DATA}"/"${SCRIPTNAME}"
 fi
 
 # ---------- Function Definitions ----------
@@ -62,7 +62,7 @@ function emsg() {
     MSG="$1"; shift
     FULL_MSG="[ERROR] $MSG\n"
     >&2 printf "${FULL_MSG}"
-    logger -t "${scriptname}" "${FULL_MSG}"
+    logger -t "${SCRIPTNAME}" "${FULL_MSG}"
 }
 
 function dmsg() {
