@@ -1,13 +1,13 @@
-libdir=$(DESTDIR)/usr/lib
+lib=$(DESTDIR)/usr/lib
 files=gutils.sh secret.sh
 
 .PHONY: install uninstall
 
-install: $(libdir) $(files)
-	cp $(files) $(libdir)
+install: $(lib) $(files)
+	cp $(files) $(lib)
 
 $(libdir):
-	@mkdir -p $(libdir)
+	@mkdir -p $(lib)
 
 uninstall:
-	$(foreach f, $(files), rm $(libdir)/$(f);)
+	$(foreach f, $(files), rm $(lib)/$(f);)

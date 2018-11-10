@@ -51,7 +51,7 @@ function die() {
     fi
 
     if [[ "${EC}" -eq 2 ]]; then
-        MSG="Command-line parse error.\n\n${MSG}"
+        MSG="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${MSG}"
     fi
 
     emsg "${MSG}"
