@@ -90,6 +90,7 @@ function usage() {
         if [[ "${hspace}" = true ]]; then
             printf "       "
         fi
+
         printf "${SCRIPTNAME} %s\n" "${P}"
         hspace=true
     done

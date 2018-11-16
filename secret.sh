@@ -10,7 +10,7 @@
 # The ${secret_wrapper} variable must be set before sourcing secret.sh into the client.    #
 ###################################################################################################
 
-source /usr/lib/gutils.sh
+source gutils.sh
 
 # shellcheck disable=SC2154
 if [[ -z "${secret_wrapper}" ]]; then
