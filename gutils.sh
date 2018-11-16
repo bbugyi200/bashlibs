@@ -83,6 +83,18 @@ function notify() {
     notify-send "$(basename "$0")" "$@"
 }
 
+function usage() {
+    printf "Usage: "
+    hspace=false
+    for P in "${USAGE_GRAMMAR[@]}"; do
+        if [[ "${hspace}" = true ]]; then
+            printf "       "
+        fi
+        printf "${SCRIPTNAME} %s\n" "${P}"
+        hspace=true
+    done
+}
+
 function truncate() {
     rm "${1}" &> /dev/null
     touch "${1}"
