@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ################################################
 #  Global Utility Functions for Shell Scripts  #
 ################################################
@@ -85,6 +87,7 @@ function notify() {
 
 function usage() {
     printf "Usage: "
+
     hspace=false
     for P in "${USAGE_GRAMMAR[@]}"; do
         if [[ "${hspace}" = true ]]; then
