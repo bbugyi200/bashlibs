@@ -1,4 +1,7 @@
-bindir=$(DESTDIR)/usr/bin
+PREFIX ?= /usr
+BINDIR ?= $(PREFIX)/bin
+
+bindir=$(DESTDIR)/$(BINDIR)
 files=gutils.sh secret.sh
 
 .PHONY: install uninstall
