@@ -9,9 +9,7 @@ if [[ "${GUTILS_HAS_BEEN_SOURCED}" != true ]]; then
 
     # ---------- Global Variables ----------
     SCRIPTNAME="$(basename "$0")"
-    # shellcheck disable=SC2034
-    USAGE="usage: ${SCRIPTNAME}"
-    
+
     # ---------- XDG User Directories ----------
     # shellcheck disable=SC2034
     if [[ -n "${XDG_RUNTIME_DIR}" ]]; then
@@ -47,7 +45,7 @@ function die() {
     MSG="$1"; shift
 
     if [[ -n "$1" ]]; then
-        EC="$1"
+        EC="$1"; shift
     else
         EC=1
     fi
@@ -72,7 +70,9 @@ function dmsg() {
 
     # shellcheck disable=SC2154
     if [[ "${debug}" = true ]]; then
-        printf "[DEBUG] ${MSG}\n"
+        FULL_MSG="[DEBUG] ${MSG}\n"
+        printf "${FULL_MSG}"
+        logger -t "${SCRIPTNAME}" "${FULL_MSG}"
     fi
 }
 
@@ -82,7 +82,7 @@ function imsg() {
 }
 
 function notify() {
-    notify-send "$(basename "$0")" "$@"
+    notify-send "${SCRIPTNAME}" "$@"
 }
 
 function usage() {
@@ -92,10 +92,11 @@ function usage() {
     for P in "${USAGE_GRAMMAR[@]}"; do
         if [[ "${hspace}" = true ]]; then
             printf "       "
+        else
+            hspace=true
         fi
 
         printf "${SCRIPTNAME} %s\n" "${P}"
-        hspace=true
     done
 }
 
