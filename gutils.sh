@@ -78,7 +78,12 @@ function dmsg() {
 
 function imsg() {
     MSG="$1"; shift
-    printf ">>> $MSG\n"
+    printf "[INFO] $MSG\n"
+}
+
+function wmsg() {
+    MSG="$1"; shift
+    printf "[WARNING] $MSG\n"
 }
 
 function notify() {
