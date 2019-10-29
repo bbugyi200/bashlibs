@@ -22,14 +22,14 @@ if [[ "${GUTILS_HAS_BEEN_SOURCED}" != true ]]; then
     if [[ -n "${XDG_CONFIG_HOME}" ]]; then
         XDG_CONFIG="${XDG_CONFIG_HOME}"
     else
-        XDG_CONFIG=/home/"${USER}"
+        XDG_CONFIG="${HOME}"/.config
     fi
     
     # shellcheck disable=SC2034
     if [[ -n "${XDG_DATA_HOME}" ]]; then
         XDG_DATA="${XDG_DATA_HOME}"
     else
-        XDG_DATA=/home/"${USER}"/.local/share
+        XDG_DATA="${HOME}"/.local/share
     fi
     
     # shellcheck disable=SC2034
