@@ -72,13 +72,13 @@ function _msg() {
     local msg="$(printf "$@")"
 
     local upper_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
-    local full_msg="$(printf "%s | %s | %s | %s\n" \
+    local log_msg="$(printf "%s | %s | %s | %s\n" \
         "$(date +"%Y-%m-%d %H:%M:%S")" \
         "${SCRIPTNAME}" \
         "${upper_level}" \
         "${msg}")"
 
-    printf "${full_msg}\n" | \
+    printf "${log_msg}\n" | \
         # Print to STDERR...
         tee /dev/stderr | \
         # Get rid of first two log message sections...
