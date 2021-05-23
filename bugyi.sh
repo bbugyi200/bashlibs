@@ -82,18 +82,22 @@ function wmsg() {
 }
 
 function _msg() {
-    local level="$(echo "${1}" | tr '[:lower:]' '[:upper:]')"
+    local level="$1"
     shift
 
     local msg="$(printf "$@")"
+
+    local upper_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
     local full_msg="$(printf "%s | %s | %s | %s\n" \
         "$(date +"%Y-%m-%d %H:%M:%S")" \
         "${SCRIPTNAME}" \
-        "${level}" \
+        "${upper_level}" \
         "${msg}")"
 
     printf "${full_msg}\n" | \
+        # Print to STDERR and syslog...
         tee /dev/stderr | \
+        # Get rid of first two log message sections...
         perl -nE 'print s/^[^|]+\|[ ]*[^|]+\|[ ]*(.*)/\1/gr' | \
         logger -t "${SCRIPTNAME}"
 }
