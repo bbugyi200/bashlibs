@@ -45,28 +45,28 @@ function die() {
     local msg="$1"; shift
 
     if [[ -n "$1" ]]; then
-        EC="$1"; shift
+        local ec="$1"; shift
     else
-        EC=1
+        local ec=1
     fi
 
-    if [[ "${EC}" -eq 2 ]]; then
+    if [[ "${ec}" -eq 2 ]]; then
         msg="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${msg}"
     fi
 
     emsg "${msg}"
-    exit "$EC"
+    exit "$ec"
 }
 
 function emsg() {
-    local msg="$(printf "$@")"; shift
+    local msg="$(printf "$@")"
     local full_msg="[ERROR] $msg\n"
     >&2 printf "${full_msg}"
     logger -t "${SCRIPTNAME}" "${full_msg}"
 }
 
 function dmsg() {
-    local msg="$(printf "$@")"; shift
+    local msg="$(printf "$@")"
 
     # shellcheck disable=SC2154
     if [[ "${debug}" = true ]]; then
@@ -77,12 +77,12 @@ function dmsg() {
 }
 
 function imsg() {
-    local msg="$(printf "$@")"; shift
+    local msg="$(printf "$@")"
     printf "%s: $msg\n" "${SCRIPTNAME}"
 }
 
 function wmsg() {
-    local msg="$(printf "$@")"; shift
+    local msg="$(printf "$@")"
     printf "[WARNING] $msg\n"
 }
 
@@ -93,7 +93,7 @@ function notify() {
 function usage() {
     printf "Usage: "
 
-    hspace=false
+    local hspace=false
     for P in "${USAGE_GRAMMAR[@]}"; do
         if [[ "${hspace}" = true ]]; then
             printf "       "
