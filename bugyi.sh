@@ -61,10 +61,7 @@ function die() {
 }
 
 function emsg() {
-    local msg="$(printf "$@")"
-    local full_msg="[ERROR] $msg\n"
-    printf 1>&2 "${full_msg}"
-    logger -t "${SCRIPTNAME}" "${full_msg}"
+    _msg "error" "$@"
 }
 
 function dmsg() {
@@ -72,20 +69,33 @@ function dmsg() {
 
     # shellcheck disable=SC2154
     if [[ "${debug}" = true ]]; then
-        local full_msg="[DEBUG] ${msg}\n"
-        printf "${full_msg}"
-        logger -t "${SCRIPTNAME}" "${full_msg}"
+        _msg "debug" "$@"
     fi
 }
 
 function imsg() {
-    local msg="$(printf "$@")"
-    printf "%s: $msg\n" "${SCRIPTNAME}"
+    _msg "info" "$@"
 }
 
 function wmsg() {
+    _msg "warning" "$@"
+}
+
+function _msg() {
+    local level="$1"
+    shift
+
     local msg="$(printf "$@")"
-    printf 1>&2 "[WARNING] $msg\n"
+    local full_msg="$(printf "%s | %s | %s | %s\n" \
+        "$(date +"%Y-%m-%d %H:%M:%S")" \
+        "${SCRIPTNAME}" \
+        "${level^^}" \
+        "${msg}")"
+
+    printf "${full_msg}\n" | \
+        tee /dev/stderr | \
+        perl -nE 'print s/^[^|]+\|[ ]*(.*)/\1/gr' | \
+        logger -t "${SCRIPTNAME}"
 }
 
 function notify() {
