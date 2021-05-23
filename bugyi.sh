@@ -60,26 +60,10 @@ function die() {
     exit "$ec"
 }
 
-function emsg() {
-    _msg "error" "$@"
-}
-
-function dmsg() {
-    local msg="$(printf "$@")"
-
-    # shellcheck disable=SC2154
-    if [[ "${debug}" = true ]]; then
-        _msg "debug" "$@"
-    fi
-}
-
-function imsg() {
-    _msg "info" "$@"
-}
-
-function wmsg() {
-    _msg "warning" "$@"
-}
+function emsg() { _msg "error" "$@"; }
+function dmsg() { _msg "debug" "$@"; }
+function imsg() { _msg "info" "$@"; }
+function wmsg() { _msg "warning" "$@"; }
 
 function _msg() {
     local level="$1"
