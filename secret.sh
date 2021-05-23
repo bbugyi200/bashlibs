@@ -10,7 +10,7 @@
 # The ${secret_wrapper} variable must be set before sourcing secret.sh into the client.    #
 ###################################################################################################
 
-source gutils.sh
+source bugyi.sh
 
 # shellcheck disable=SC2154
 if [[ -z "${secret_wrapper}" ]]; then
