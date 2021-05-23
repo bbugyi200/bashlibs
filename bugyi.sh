@@ -42,7 +42,7 @@ fi
 
 # ---------- Function Definitions ----------
 function die() {
-    MSG="$1"; shift
+    local msg="$1"; shift
 
     if [[ -n "$1" ]]; then
         EC="$1"; shift
@@ -51,39 +51,39 @@ function die() {
     fi
 
     if [[ "${EC}" -eq 2 ]]; then
-        MSG="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${MSG}"
+        msg="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${msg}"
     fi
 
-    emsg "${MSG}"
+    emsg "${msg}"
     exit "$EC"
 }
 
 function emsg() {
-    MSG="$1"; shift
-    FULL_MSG="[ERROR] $MSG\n"
-    >&2 printf "${FULL_MSG}"
-    logger -t "${SCRIPTNAME}" "${FULL_MSG}"
+    local msg="$(printf "$@")"; shift
+    local full_msg="[ERROR] $msg\n"
+    >&2 printf "${full_msg}"
+    logger -t "${SCRIPTNAME}" "${full_msg}"
 }
 
 function dmsg() {
-    MSG="$1"; shift
+    local msg="$(printf "$@")"; shift
 
     # shellcheck disable=SC2154
     if [[ "${debug}" = true ]]; then
-        FULL_MSG="[DEBUG] ${MSG}\n"
-        printf "${FULL_MSG}"
-        logger -t "${SCRIPTNAME}" "${FULL_MSG}"
+        local full_msg="[DEBUG] ${msg}\n"
+        printf "${full_msg}"
+        logger -t "${SCRIPTNAME}" "${full_msg}"
     fi
 }
 
 function imsg() {
-    MSG="$1"; shift
-    printf "[INFO] $MSG\n"
+    local msg="$(printf "$@")"; shift
+    printf "%s: $msg\n" "${SCRIPTNAME}"
 }
 
 function wmsg() {
-    MSG="$1"; shift
-    printf "[WARNING] $MSG\n"
+    local msg="$(printf "$@")"; shift
+    printf "[WARNING] $msg\n"
 }
 
 function notify() {
