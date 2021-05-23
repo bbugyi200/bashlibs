@@ -94,7 +94,7 @@ function _msg() {
 
     printf "${full_msg}\n" | \
         tee /dev/stderr | \
-        perl -nE 'print s/^[^|]+\|[ ]*(.*)/\1/gr' | \
+        perl -nE 'print s/^[^|]+\|[ ]*[^|]+\|[ ]*(.*)/\1/gr' | \
         logger -t "${SCRIPTNAME}"
 }
 
