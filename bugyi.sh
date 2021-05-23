@@ -82,14 +82,14 @@ function wmsg() {
 }
 
 function _msg() {
-    local level="$1"
+    local level="$(echo "${1}" | tr '[:lower:]' '[:upper:]')"
     shift
 
     local msg="$(printf "$@")"
     local full_msg="$(printf "%s | %s | %s | %s\n" \
         "$(date +"%Y-%m-%d %H:%M:%S")" \
         "${SCRIPTNAME}" \
-        "${level^^}" \
+        "${level}" \
         "${msg}")"
 
     printf "${full_msg}\n" | \
