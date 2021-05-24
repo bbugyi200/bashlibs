@@ -103,7 +103,7 @@ function _msg() {
         # Get rid of first two log message sections...
         perl -nE 'print s/^[^|]+\|[ ]*[^|]+\|[ ]*(.*)/\1/gr' | \
         # And then log to syslog...
-        logger -t "${SCRIPTNAME}"
+        logger -t "${scriptname}"
 }
 
 function notify() {
