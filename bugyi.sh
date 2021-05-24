@@ -93,6 +93,11 @@ function _msg() {
         local this_lineno="${caller_info[0]}"
         local this_funcname="${caller_info[1]}"
         local this_filename="${caller_info[2]}"
+
+        # This happens when called from global scope.
+        if [[ "${this_funcname}" == "main" ]]; then
+            this_funcname="<main>"
+        fi
     fi
 
     local msg="$(printf "$@")"

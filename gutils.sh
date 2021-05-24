@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source bugyi.sh
-wmsg "Sourcing gutils.sh is deprecated! Source bugyi.sh instead! (%s)" "${SCRIPTNAME}"
+wmsg --up 1 "The gutils.sh module is deprecated! Source bugyi.sh instead!"
