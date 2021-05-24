@@ -92,7 +92,7 @@ function notify() {
 }
 
 function usage() {
-    printf "Usage: "
+    printf "usage: "
 
     local hspace=false
     for P in "${USAGE_GRAMMAR[@]}"; do
