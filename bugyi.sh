@@ -71,11 +71,11 @@ function _msg() {
 
     local msg="$(printf "$@")"
 
-    local upper_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
+    local uc_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
     local log_msg="$(printf "%s | %s | %s | %s\n" \
         "$(date +"%Y-%m-%d %H:%M:%S")" \
         "${SCRIPTNAME}" \
-        "${upper_level}" \
+        "${uc_level}" \
         "${msg}")"
 
     printf "${log_msg}\n" | \
