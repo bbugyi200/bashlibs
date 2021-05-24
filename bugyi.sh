@@ -10,6 +10,14 @@ if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
     # ---------- Global Variables ----------
     SCRIPTNAME="$(basename "$0")"
 
+    if [[ -n "${BASH}" ]]; then
+        MY_SHELL=bash
+    elif [[ -n "${ZSH_NAME}" ]]; then
+        MY_SHELL=zsh
+    else
+        MY_SHELL=unknown
+    fi
+
     # ---------- XDG User Directories ----------
     # shellcheck disable=SC2034
     if [[ -n "${XDG_RUNTIME_DIR}" ]]; then
@@ -78,24 +86,35 @@ function _msg() {
         local up=1
     fi
 
-    # shellcheck disable=SC2207
-    local stack=($(caller "${up}"))
-
-    local lineno="${stack[0]}"
-    local funcname="${stack[1]}"
-    local filename="${stack[2]}"
+    if [[ "${MY_SHELL}" == "bash" ]]; then
+        # shellcheck disable=SC2207
+        local stack=($(caller "${up}"))
+        
+        local this_lineno="${stack[0]}"
+        local this_funcname="${stack[1]}"
+        local this_filename="${stack[2]}"
+    fi
 
     local msg="$(printf "$@")"
 
     local uc_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
-    local scriptname="$(basename "${filename}")"
-    local log_msg="$(printf "%s | %s | %s:%d | %s | %s\n" \
-        "$(date +"%Y-%m-%d %H:%M:%S")" \
-        "${scriptname}" \
-        "${funcname}" \
-        "${lineno}" \
-        "${uc_level}" \
-        "${msg}")"
+    local scriptname="$(basename "${this_filename:-"${MY_SHELL}"}")"
+    local date_string="$(date +"%Y-%m-%d %H:%M:%S")"
+    if [[ -n "${this_funcname}" ]]; then
+        local log_msg="$(printf "%s | %s | %s:%d | %s | %s\n" \
+            "${date_string}" \
+            "${scriptname}" \
+            "${this_funcname}" \
+            "${this_lineno}" \
+            "${uc_level}" \
+            "${msg}")"
+    else
+        local log_msg="$(printf "%s | %s | %s | %s\n" \
+            "${date_string}" \
+            "${scriptname}" \
+            "${uc_level}" \
+            "${msg}")"
+    fi
 
     printf "${log_msg}\n" | \
         # Print to STDERR...
