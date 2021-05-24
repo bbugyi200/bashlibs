@@ -56,7 +56,7 @@ function die() {
         msg="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${msg}"
     fi
 
-    emsg "${msg}"
+    emsg --up 1 "${msg}"
     exit "$ec"
 }
 
@@ -69,12 +69,31 @@ function _msg() {
     local level="$1"
     shift
 
+    if [[ "$1" == "--up" ]]; then
+        shift
+
+        local up=$(($1 + 1))
+        shift
+    else
+        local up=1
+    fi
+
+    # shellcheck disable=SC2207
+    local stack=($(caller "${up}"))
+
+    local lineno="${stack[0]}"
+    local funcname="${stack[1]}"
+    local filename="${stack[2]}"
+
     local msg="$(printf "$@")"
 
     local uc_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
-    local log_msg="$(printf "%s | %s | %s | %s\n" \
+    local scriptname="$(basename "${filename}")"
+    local log_msg="$(printf "%s | %s | %s:%d | %s | %s\n" \
         "$(date +"%Y-%m-%d %H:%M:%S")" \
-        "${SCRIPTNAME}" \
+        "${scriptname}" \
+        "${funcname}" \
+        "${lineno}" \
         "${uc_level}" \
         "${msg}")"
 
