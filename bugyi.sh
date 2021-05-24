@@ -61,7 +61,7 @@ function die() {
 }
 
 function emsg() { _msg "error" "$@"; }
-function dmsg() { _msg "debug" "$@"; }
+function dmsg() { if [[ "${DEBUG}" = true ]]; then _msg "debug" "$@"; fi; }
 function imsg() { _msg "info" "$@"; }
 function wmsg() { _msg "warning" "$@"; }
 
