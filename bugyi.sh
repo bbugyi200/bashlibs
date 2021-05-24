@@ -88,11 +88,11 @@ function _msg() {
 
     if [[ "${MY_SHELL}" == "bash" ]]; then
         # shellcheck disable=SC2207
-        local stack=($(caller "${up}"))
+        local caller_info=($(caller "${up}"))
         
-        local this_lineno="${stack[0]}"
-        local this_funcname="${stack[1]}"
-        local this_filename="${stack[2]}"
+        local this_lineno="${caller_info[0]}"
+        local this_funcname="${caller_info[1]}"
+        local this_filename="${caller_info[2]}"
     fi
 
     local msg="$(printf "$@")"
