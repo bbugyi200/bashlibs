@@ -77,10 +77,13 @@ function _msg() {
     local level="$1"
     shift
 
-    if [[ "$1" == "--up" ]]; then
+    if [[ "$1" == "--up" || "$1" == "-u" ]]; then
         shift
 
         local up=$(($1 + 1))
+        shift
+    elif [[ "$1" == "-u"* ]]; then
+        local up=$((${1:2} + 1))
         shift
     else
         local up=1
