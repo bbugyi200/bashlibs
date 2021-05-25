@@ -68,8 +68,8 @@ function die() {
     exit "$ec"
 }
 
-function emsg() { _msg "error" "$@"; }
 function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "$@"; fi; }
+function emsg() { _msg "error" "$@"; }
 function imsg() { _msg "info" "$@"; }
 function wmsg() { _msg "warning" "$@"; }
 
