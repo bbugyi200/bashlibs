@@ -109,7 +109,7 @@ function _msg() {
     local scriptname="$(basename "${this_filename:-"${MY_SHELL}"}")"
     local date_string="$(date +"%Y-%m-%d %H:%M:%S")"
     if [[ -n "${this_funcname}" ]]; then
-        local log_msg="$(printf "%s | %s | %s:%d | %s | %s\n" \
+        local log_msg="$(printf "%s | %s | %s:%d | %s | %s" \
             "${date_string}" \
             "${scriptname}" \
             "${this_funcname}" \
@@ -117,7 +117,7 @@ function _msg() {
             "${uc_level}" \
             "${msg}")"
     else
-        local log_msg="$(printf "%s | %s | %s | %s\n" \
+        local log_msg="$(printf "%s | %s | %s | %s" \
             "${date_string}" \
             "${scriptname}" \
             "${uc_level}" \
