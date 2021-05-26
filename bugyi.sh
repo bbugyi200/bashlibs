@@ -52,6 +52,8 @@ fi
 function die() {
     if [[ "${!#}" =~ ^[1-9][0-9]*$ && "${!#}" -le 256 ]]; then
         local ec="${!#}"
+
+        # Remove the last argument from $@.
         set -- "${@:1:$(($#-1))}"
     else
         local ec=1
