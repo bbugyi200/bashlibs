@@ -51,22 +51,22 @@ fi
 # ---------- Function Definitions ----------
 function die() {
     if [[ "${!#}" =~ ^[1-9][0-9]*$ && "${!#}" -le 256 ]]; then
-        local ec="${!#}"
+        local exit_code="${!#}"
 
         # Remove the last argument from $@.
         set -- "${@:1:$(($#-1))}"
     else
-        local ec=1
+        local exit_code=1
     fi
 
     local message="$(printf "$@")"
 
-    if [[ "${ec}" -eq 2 ]]; then
+    if [[ "${exit_code}" -eq 2 ]]; then
         message="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${message}"
     fi
 
     emsg --up 1 "${message}"
-    exit "$ec"
+    exit "${exit_code}"
 }
 
 function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "$@"; fi; }
