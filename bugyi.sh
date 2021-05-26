@@ -50,21 +50,20 @@ fi
 
 # ---------- Function Definitions ----------
 function die() {
-    local msg="$1"
-    shift
-
-    if [[ -n "$1" ]]; then
-        local ec="$1"
-        shift
+    if [[ "${!#}" =~ ^[1-9][0-9]*$ && "${!#}" -le 256 ]]; then
+        local ec="${!#}"
+        set -- "${@:1:$(($#-1))}"
     else
         local ec=1
     fi
 
+    local message="$(printf "$@")"
+
     if [[ "${ec}" -eq 2 ]]; then
-        msg="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${msg}"
+        message="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${message}"
     fi
 
-    emsg --up 1 "${msg}"
+    emsg --up 1 "${message}"
     exit "$ec"
 }
 
@@ -89,6 +88,8 @@ function _msg() {
         local up=1
     fi
 
+    local message="$(printf "$@")"
+
     if [[ "${MY_SHELL}" == "bash" ]]; then
         # shellcheck disable=SC2207
         local caller_info=($(caller "${up}"))
@@ -103,8 +104,6 @@ function _msg() {
         fi
     fi
 
-    local msg="$(printf "$@")"
-
     local uc_level="$(echo "${level}" | tr '[:lower:]' '[:upper:]')"
     local scriptname="$(basename "${this_filename:-"${MY_SHELL}"}")"
     local date_string="$(date +"%Y-%m-%d %H:%M:%S")"
@@ -115,13 +114,13 @@ function _msg() {
             "${this_funcname}" \
             "${this_lineno}" \
             "${uc_level}" \
-            "${msg}")"
+            "${message}")"
     else
         local log_msg="$(printf "%s | %s | %s | %s" \
             "${date_string}" \
             "${scriptname}" \
             "${uc_level}" \
-            "${msg}")"
+            "${message}")"
     fi
 
     printf "${log_msg}\n" | \
