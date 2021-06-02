@@ -158,7 +158,25 @@ function truncate() {
     touch "${1}"
 }
 
-function setup_traps() { _trap_with_arg _trap_handler INT TERM; }
+function setup_traps() { 
+    local signals
+    if [[ $# -eq 0 ]]; then
+        signals=(INT TERM)
+    else
+        signals=("$@")
+    fi
+
+    _trap_with_arg _trap_handler "${signals[@]}"
+}
+function _trap_with_arg() {
+    func="$1"
+    shift
+
+    for sig in "$@"; do
+        # shellcheck disable=SC2064
+        trap "$func $sig" "$sig"
+    done
+}
 function _trap_handler() {
     local signal="$1"
     shift
@@ -174,13 +192,4 @@ function _trap_handler() {
 
     wmsg --up 1 "Received %s signal. Terminating script (ec=%d)..." "${signal}" "${exit_code}"
     exit "${exit_code}"
-}
-function _trap_with_arg() {
-    func="$1"
-    shift
-
-    for sig in "$@"; do
-        # shellcheck disable=SC2064
-        trap "$func $sig" "$sig"
-    done
 }
