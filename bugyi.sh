@@ -54,7 +54,7 @@ function die() {
         local exit_code="${!#}"
 
         # Remove the last argument from $@.
-        set -- "${@:1:$(($#-1))}"
+        set -- "${@:1:$(($# - 1))}"
     else
         local exit_code=1
     fi
@@ -95,7 +95,7 @@ function _msg() {
     if [[ "${MY_SHELL}" == "bash" ]]; then
         # shellcheck disable=SC2207
         local caller_info=($(caller "${up}"))
-        
+
         local this_lineno="${caller_info[0]}"
         local this_funcname="${caller_info[1]}"
         local this_filename="${caller_info[2]}"
@@ -125,11 +125,11 @@ function _msg() {
             "${message}")"
     fi
 
-    printf "${log_msg}\n" | \
+    printf "${log_msg}\n" |
         # Print to STDERR...
-        tee /dev/stderr | \
+        tee /dev/stderr |
         # Get rid of first two log message sections...
-        perl -nE 'print s/^[^|]+\|[ ]*[^|]+\|[ ]*(.*)/\1/gr' | \
+        perl -nE 'print s/^[^|]+\|[ ]*[^|]+\|[ ]*(.*)/\1/gr' |
         # And then log to syslog...
         logger -t "${scriptname}"
 }
@@ -156,4 +156,31 @@ function usage() {
 function truncate() {
     rm "${1}" &>/dev/null
     touch "${1}"
+}
+
+function setup_traps() { _trap_with_arg _trap_handler INT TERM; }
+function _trap_handler() {
+    local signal="$1"
+    shift
+
+    local exit_code
+    if [[ "${signal}" == "INT" ]]; then
+        exit_code=$((128 + 2))
+    elif [[ "${signal}" == "TERM" ]]; then
+        exit_code=$((128 + 15))
+    else
+        exit_code=1
+    fi
+
+    wmsg --up 1 "Received %s signal. Terminating script (ec=%d)..." "${signal}" "${exit_code}"
+    exit "${exit_code}"
+}
+function _trap_with_arg() {
+    func="$1"
+    shift
+
+    for sig in "$@"; do
+        # shellcheck disable=SC2064
+        trap "$func $sig" "$sig"
+    done
 }
