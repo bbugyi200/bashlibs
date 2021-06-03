@@ -5,10 +5,10 @@
 ################################################
 
 if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
-    BUGYI_HAS_BEEN_SOURCED=true
+    readonly BUGYI_HAS_BEEN_SOURCED=true
 
     # ---------- Global Variables ----------
-    SCRIPTNAME="$(basename "$0")"
+    readonly SCRIPTNAME="$(basename "$0")"
 
     if [[ -n "${BASH}" ]]; then
         MY_SHELL=bash
@@ -17,6 +17,7 @@ if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
     else
         MY_SHELL=unknown
     fi
+    readonly MY_SHELL
 
     # ---------- XDG User Directories ----------
     # shellcheck disable=SC2034
@@ -25,6 +26,7 @@ if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
     else
         XDG_RUNTIME=/tmp
     fi
+    readonly XDG_RUNTIME
 
     # shellcheck disable=SC2034
     if [[ -n "${XDG_CONFIG_HOME}" ]]; then
@@ -32,6 +34,7 @@ if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
     else
         XDG_CONFIG="${HOME}"/.config
     fi
+    readonly XDG_CONFIG
 
     # shellcheck disable=SC2034
     if [[ -n "${XDG_DATA_HOME}" ]]; then
@@ -39,13 +42,14 @@ if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
     else
         XDG_DATA="${HOME}"/.local/share
     fi
+    readonly XDG_DATA
 
     # shellcheck disable=SC2034
-    MY_XDG_RUNTIME="${XDG_RUNTIME}"/"${SCRIPTNAME}"
+    readonly MY_XDG_RUNTIME="${XDG_RUNTIME}"/"${SCRIPTNAME}"
     # shellcheck disable=SC2034
-    MY_XDG_CONFIG="${XDG_CONFIG}"/"${SCRIPTNAME}"
+    readonly MY_XDG_CONFIG="${XDG_CONFIG}"/"${SCRIPTNAME}"
     # shellcheck disable=SC2034
-    MY_XDG_DATA="${XDG_DATA}"/"${SCRIPTNAME}"
+    readonly MY_XDG_DATA="${XDG_DATA}"/"${SCRIPTNAME}"
 fi
 
 # ---------- Function Definitions ----------
