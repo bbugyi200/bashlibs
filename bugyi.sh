@@ -138,6 +138,10 @@ function _msg() {
         logger -t "${scriptname}"
 }
 
+function pyprint() {
+    python -c "import sys; print(sys.argv[1].format(*sys.argv[2:]))" "$@"
+}
+
 function notify() {
     notify-send "${SCRIPTNAME}" "$@"
 }
