@@ -138,7 +138,7 @@ function _msg() {
         logger -t "${scriptname}"
 }
 
-function pyprint() {
+function pyprintf() {
     python -c "import sys; args = ['\\n'.join(a.split(r'\\n')) for a in sys.argv[1:]]; print(args[0].format(*args[1:]), end='')" "$@"
 }
 
