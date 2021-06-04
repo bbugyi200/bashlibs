@@ -139,7 +139,7 @@ function _msg() {
 }
 
 function pyprint() {
-    python -c "import sys; print(sys.argv[1].format(*sys.argv[2:]))" "$@"
+    python -c "import sys; args = ['\\n'.join(a.split(r'\\n')) for a in sys.argv[1:]]; print(args[0].format(*args[1:]), end='')" "$@"
 }
 
 function notify() {
