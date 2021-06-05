@@ -167,16 +167,7 @@ function truncate() {
     touch "${1}"
 }
 
-function setup_traps() { 
-    local signals
-    if [[ $# -eq 0 ]]; then
-        signals=(INT TERM)
-    else
-        signals=("$@")
-    fi
-
-    _trap_with_arg _trap_handler "${signals[@]}"
-}
+function setup_traps() { _trap_with_arg _trap_handler "$@"; }
 function _trap_with_arg() {
     func="$1"
     shift
