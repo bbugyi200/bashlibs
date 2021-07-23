@@ -69,7 +69,7 @@ function die() {
         message="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${message}"
     fi
 
-    emsg --up 1 --no-fmt "${message}"
+    emsg --up 1 "${message}"
     exit "${exit_code}"
 }
 
@@ -94,14 +94,7 @@ function _msg() {
         local up=1
     fi
 
-    local message
-    if [[ "$1" == "--no-fmt" ]]; then
-        shift
-        message="$1"
-        shift
-    else
-        message="$(printf "$@")"
-    fi
+    local message="$(printf "$@")"
 
     if [[ "${MY_SHELL}" == "bash" ]]; then
         # shellcheck disable=SC2207
