@@ -136,7 +136,7 @@ function _msg() {
             "${message}")"
     fi
 
-    printf "${log_msg}\n" |
+    echo "${log_msg}" |
         # Print to STDERR...
         tee /dev/stderr |
         # Get rid of first two log message sections...
