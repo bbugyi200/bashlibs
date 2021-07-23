@@ -69,7 +69,7 @@ function die() {
         message="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${message}"
     fi
 
-    emsg --up 1 --no-fmt "${message}"
+    emsg --up 1 "${message}"
     exit "${exit_code}"
 }
 
@@ -95,8 +95,7 @@ function _msg() {
     fi
 
     local message
-    if [[ "$1" == "--no-fmt" ]]; then
-        shift
+    if [[ "$#" -eq 1 ]]; then
         message="$1"
         shift
     else
