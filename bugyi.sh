@@ -63,7 +63,13 @@ function die() {
         local exit_code=1
     fi
 
-    local message="$(printf "$@")"
+    local message
+    if [[ "$#" -eq 1 ]]; then
+        message="$1"
+        shift
+    else
+        message="$(printf "$@")"
+    fi
 
     if [[ "${exit_code}" -eq 2 ]]; then
         message="Failed while parsing command-line arguments. Try '${SCRIPTNAME} --help' for more information.\n\n${message}"
