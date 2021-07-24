@@ -7,7 +7,7 @@
 # ("secret_file"). Both the hash and the file must then be sent to the helper script as           #
 # command-line arguments.                                                                         #
 #                                                                                                 #
-# The ${secret_wrapper} variable must be set before sourcing secret.sh into the client.    #
+# The ${secret_wrapper} variable must be set before sourcing secret.sh into the client.           #
 ###################################################################################################
 
 source bugyi.sh
