@@ -54,13 +54,14 @@ fi
 
 # ---------- Function Definitions ----------
 function die() {
+    local exit_code
     if [[ "${!#}" =~ ^[1-9][0-9]*$ && "${!#}" -le 256 ]]; then
-        local exit_code="${!#}"
+        exit_code="${!#}"
 
         # Remove the last argument from $@.
         set -- "${@:1:$(($# - 1))}"
     else
-        local exit_code=1
+        exit_code=1
     fi
 
     local message
