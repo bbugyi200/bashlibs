@@ -128,8 +128,9 @@ function _msg() {
     local scriptname="$(basename "${this_filename:-"${MY_SHELL}"}")"
     local date_string="$(date +"%Y-%m-%d %H:%M:%S")"
     if [[ -n "${this_funcname}" ]]; then
-        local log_msg="$(printf "%s | %s | %s:%d | %s | %s" \
+        local log_msg="$(printf "%s | PID:%s | %s | %s:%d | %s | %s" \
             "${date_string}" \
+            "$$" \
             "${scriptname}" \
             "${this_funcname}" \
             "${this_lineno}" \
