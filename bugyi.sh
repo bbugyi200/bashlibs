@@ -80,14 +80,27 @@ function die() {
     exit "${exit_code}"
 }
 
-function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "$@"; fi; }
-function emsg() { _msg "error" "$@"; }
-function imsg() { _msg "info" "$@"; }
-function wmsg() { _msg "warning" "$@"; }
+# Color palette
+readonly GREEN='\033[38;5;2m'
+readonly RED='\033[38;5;1m'
+readonly RESET='\033[0m'
+readonly YELLOW='\033[38;5;3m'
+
+function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "${GREEN}" "$@"; fi; }
+function emsg() { _msg "error" "${RED}" "$@"; }
+function imsg() { _msg "info" "${RESET}" "$@"; }
+function wmsg() { _msg "warning" "${YELLOW}" "$@"; }
 
 function _msg() {
     local level="$1"
     shift
+    
+    local color="$1"
+    shift
+
+    if [[ -n "${NO_COLOR}" ]]; then
+        color="${RESET}"
+    fi
 
     local up
     if [[ "$1" == "--up" || "$1" == "-u" ]]; then
@@ -128,7 +141,7 @@ function _msg() {
     local scriptname="$(basename "${this_filename:-"${MY_SHELL}"}")"
     local date_string="$(date +"%Y-%m-%d %H:%M:%S")"
     if [[ -n "${this_funcname}" ]]; then
-        local log_msg="$(printf "%s | PID:%s | %s | %s:%d | %s | %s" \
+        local log_msg="$(printf "${color}%s | PID:%s | %s | %s:%d | %s | %s${RESET}" \
             "${date_string}" \
             "$$" \
             "${scriptname}" \
@@ -137,7 +150,7 @@ function _msg() {
             "${uc_level}" \
             "${message}")"
     else
-        local log_msg="$(printf "%s | %s | %s | %s" \
+        local log_msg="$(printf "${color}%s | %s | %s | %s${RESET}" \
             "${date_string}" \
             "${scriptname}" \
             "${uc_level}" \
