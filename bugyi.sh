@@ -81,26 +81,30 @@ function die() {
 }
 
 # Color palette
-readonly GREEN='\033[38;5;2m'
-readonly PURPLE='\033[38;5;5m'
-readonly RED='\033[38;5;1m'
-readonly RESET='\033[0m'
-readonly YELLOW='\033[38;5;3m'
+readonly COLOR_GREEN='\033[38;5;2m'
+readonly COLOR_PURPLE='\033[38;5;5m'
+readonly COLOR_RED='\033[38;5;1m'
+readonly COLOR_RESET='\033[0m'
+readonly COLOR_YELLOW='\033[38;5;3m'
 
-function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "${PURPLE}" "$@"; fi; }
-function emsg() { _msg "error" "${RED}" "$@"; }
-function imsg() { _msg "info" "${GREEN}" "$@"; }
-function wmsg() { _msg "warning" "${YELLOW}" "$@"; }
+function log::debug() { dmsg "$@"; }
+function log::error() { emsg "$@"; }
+function log::info() { imsg "$@"; }
+function log::warn() { wmsg "$@"; }
 
+function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "${COLOR_PURPLE}" "$@"; fi; }
+function emsg() { _msg "error" "${COLOR_RED}" "$@"; }
+function imsg() { _msg "info" "${COLOR_GREEN}" "$@"; }
+function wmsg() { _msg "warning" "${COLOR_YELLOW}" "$@"; }
 function _msg() {
     local level="$1"
     shift
-    
+
     local color="$1"
     shift
 
-    if [[ -n "${NO_COLOR}" ]]; then
-        color="${RESET}"
+    if [[ "${DISABLE_LOG_COLOR}" == true ]]; then
+        color="${COLOR_RESET}"
     fi
 
     local up
@@ -138,7 +142,7 @@ function _msg() {
         fi
     fi
 
-    local pretty_level="${color}$(echo "${level}" | tr '[:lower:]' '[:upper:]')${RESET}"
+    local pretty_level="${color}$(echo "${level}" | tr '[:lower:]' '[:upper:]')${COLOR_RESET}"
     local scriptname="$(basename "${this_filename:-"${MY_SHELL}"}")"
     local date_string="$(date +"%Y-%m-%d %H:%M:%S")"
     if [[ -n "${this_funcname}" ]]; then
