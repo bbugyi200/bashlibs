@@ -87,10 +87,10 @@ readonly COLOR_RED='\033[38;5;1m'
 readonly COLOR_RESET='\033[0m'
 readonly COLOR_YELLOW='\033[38;5;3m'
 
-function log::debug() { dmsg "$@"; }
-function log::error() { emsg "$@"; }
-function log::info() { imsg "$@"; }
-function log::warn() { wmsg "$@"; }
+function log::debug() { dmsg --up 1 "$@"; }
+function log::error() { emsg --up 1 "$@"; }
+function log::info() { imsg --up 1 "$@"; }
+function log::warn() { wmsg --up 1 "$@"; }
 
 function dmsg() { if [[ "${DEBUG}" = true || "${VERBOSE}" -gt 0 ]]; then _msg "debug" "${COLOR_PURPLE}" "$@"; fi; }
 function emsg() { _msg "error" "${COLOR_RED}" "$@"; }
