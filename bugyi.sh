@@ -225,7 +225,7 @@ urlencode() {
         shift
     fi
 
-    local pycmd="from urllib.parse import quote; import sys; print(quote(sys.argv[1], sys.argv[2]))"
+    local pycmd="from urllib.parse import quote; import sys; print(quote(sys.argv[1], sys.argv[2]), end='')"
     python3 -c "${pycmd}" "${string}" "${excluded_chars}"
 }
 
