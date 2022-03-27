@@ -50,6 +50,13 @@ if [[ "${BUGYI_HAS_BEEN_SOURCED}" != true ]]; then
     readonly MY_XDG_CONFIG="${XDG_CONFIG}"/"${SCRIPTNAME}"
     # shellcheck disable=SC2034
     readonly MY_XDG_DATA="${XDG_DATA}"/"${SCRIPTNAME}"
+
+    # Color palette
+    readonly COLOR_GREEN='\033[38;5;2m'
+    readonly COLOR_PURPLE='\033[38;5;5m'
+    readonly COLOR_RED='\033[38;5;1m'
+    readonly COLOR_RESET='\033[0m'
+    readonly COLOR_YELLOW='\033[38;5;3m'
 fi
 
 # ---------- Function Definitions ----------
@@ -79,13 +86,6 @@ function die() {
     emsg --up 1 "${message}"
     exit "${exit_code}"
 }
-
-# Color palette
-readonly COLOR_GREEN='\033[38;5;2m'
-readonly COLOR_PURPLE='\033[38;5;5m'
-readonly COLOR_RED='\033[38;5;1m'
-readonly COLOR_RESET='\033[0m'
-readonly COLOR_YELLOW='\033[38;5;3m'
 
 function log::debug() { dmsg --up 1 "$@"; }
 function log::error() { emsg --up 1 "$@"; }
