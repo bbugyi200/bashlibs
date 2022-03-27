@@ -220,8 +220,10 @@ urlencode() {
     local string="$1"
     shift
 
-    local excluded_chars="$1"
-    shift
+    if [[ -n "$1" ]]; then
+        local excluded_chars="$1"
+        shift
+    fi
 
     local pycmd="from urllib.parse import quote; import sys; print(quote(sys.argv[1], sys.argv[2]))"
     python3 -c "${pycmd}" "${string}" "${excluded_chars}"
