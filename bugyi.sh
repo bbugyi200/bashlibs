@@ -171,9 +171,60 @@ function _msg() {
         logger -t "${scriptname}"
 }
 
+#################################################################################
+# Printf function that uses pythonic format specifiers.
+#
+# Usage
+# -----
+# pyprintf MESSAGE [FMT_ARGS [...]]
+#
+# Positional Arguments
+# --------------------
+# MESSAGE
+#     The message to print to stdout [accepts pythonic .format() method styled
+#     format arguments].
+#
+# FMT_ARGS
+#     Format arguments.
+#
+# Examples
+# --------
+# pyprintf "{0} {1} {0}" "foo" "bar"  =>  "foo bar foo"
+#################################################################################
 function pyprintf() {
     pycmd="import sys; args = ['\\n'.join(a.split(r'\\n')) for a in sys.argv[1:]]; print(args[0].format(*args[1:]), end='')"
     python -c "${pycmd}" "$@"
+}
+
+#################################################################################
+# Encodes a URL string.
+#
+# Usage
+# -----
+# urlencode STRING [EXCLUDED_CHARS]
+#
+# Positional Arguments
+# --------------------
+# STRING
+#     The string to encode.
+#
+# EXCLUDED_CHARS
+#     A string containing characters that should not be encoded.
+#
+# Examples
+# --------
+# urlencode "foo bar"  =>  "foo%20bar"
+# urlencode "/path/to/foo bar" "/"  =>  "/path/to/foo%20bar"
+#################################################################################
+urlencode() {
+    local string="$1"
+    shift
+
+    local excluded_chars="$1"
+    shift
+
+    local pycmd="from urllib.parse import quote; import sys; print(quote(sys.argv[1], sys.argv[2]))"
+    python3 -c "${pycmd}" "${string}" "${excluded_chars}"
 }
 
 function notify() {
